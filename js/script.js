@@ -1,5 +1,5 @@
 // GANTI DENGAN URL DEPLOYMENT BARU ANDA
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwSL37c-dcM5KkPIdmfRHdAg7-IOPSqrFYifQfkgkg7HmqMuOtjMv-znr5fgMAooSzp/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwKo4l9jepq6Cgh22cGpJzjQ9t91o_aKinXuAZxa38OcbuRvwk7vB7OKeEF1oDrd1Vc/exec";
 
 const testBtn = document.getElementById('test-btn');
 const statusDiv = document.getElementById('status');
