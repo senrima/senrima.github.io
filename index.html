@@ -1,26 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Uji Koneksi ke Google Apps Script</title>
+  <title>Login</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial;
+      background: #f2f2f2;
+      padding: 50px;
+    }
+
+    .login-box {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+    }
+
+    button {
+      padding: 10px;
+      width: 100%;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h1>Uji Koneksi</h1>
-  <button onclick="cekKoneksi()">Tes Koneksi</button>
-  <p id="hasil"></p>
 
-  <script>
-    async function cekKoneksi() {
-      const scriptUrl = "https://script.google.com/macros/s/AKfycbzEkgdETgD5CjIrklWDK96I042EVEF9EWzYBGIs-wt0NMdAuMsz_L5cGhGLeOq3jBNy/exec"; // Ganti dengan URL Web App kamu
-      const proxy = "https://api.allorigins.win/get?url=" + encodeURIComponent(scriptUrl);
+<div class="login-box">
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Username" />
+  <input type="password" id="password" placeholder="Password" />
+  <button onclick="login()">Login</button>
+  <div id="status">Masukkan akun Anda.</div>
+</div>
 
-      try {
-        const res = await fetch(proxy);
-        const data = await res.json();
-        document.getElementById("hasil").innerHTML = "RESPON: " + data.contents;
-      } catch (error) {
-        document.getElementById("hasil").textContent = "ERROR: " + error;
-      }
+<script>
+  async function hashSHA256(str) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(str);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function login() {
+    const username = document.getElementById("username").value.trim();
+    const passwordInput = document.getElementById("password").value.trim();
+    const status = document.getElementById("status");
+
+    if (!username || !passwordInput) {
+      status.innerText = "Username dan password wajib diisi!";
+      status.style.color = "red";
+      return;
     }
-  </script>
+
+    const password = await hashSHA256(passwordInput);
+
+    status.innerText = "Memproses...";
+
+    const form = new URLSearchParams();
+    form.append("username", username);
+    form.append("password", password);
+
+    try {
+      const response = await fetch("https://script.google.com/macros/s/AKfycby2ZR-bgGED2PMQUBwwXwfgHujdJ5s8iThedsTLXNDO9ggeK0yDaa9y1LPMvWyLxrSF5Q/exec", {
+        method: "POST",
+        body: form
+      });
+
+      const result = await response.text();
+      if (result === "Login Berhasil") {
+        localStorage.setItem("login_user", username);
+        window.location.href = "dashboard.html";
+      } else {
+        status.innerText = result;
+        status.style.color = "red";
+      }
+    } catch (err) {
+      status.innerText = "Gagal menghubungkan server.";
+      status.style.color = "red";
+    }
+  }
+</script>
+
 </body>
 </html>
