@@ -1,25 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Test Koneksi ke Google Apps Script</title>
+  <title>Uji Koneksi</title>
 </head>
 <body>
   <h1>Uji Koneksi</h1>
-  <button onclick="cekKoneksi()">Tes Koneksi</button>
-  <p id="hasil"></p>
-
-  <script>
-    async function cekKoneksi() {
-      const url = "https://script.google.com/macros/s/AKfycbzEkgdETgD5CjIrklWDK96I042EVEF9EWzYBGIs-wt0NMdAuMsz_L5cGhGLeOq3jBNy/exec"; // Ganti dengan URL kamu
-
-      try {
-        const res = await fetch(url);
-        const text = await res.text();
-        document.getElementById("hasil").textContent = "RESPON: " + text;
-      } catch (error) {
-        document.getElementById("hasil").textContent = "ERROR: " + error;
-      }
-    }
-  </script>
+  <iframe src="https://script.google.com/macros/s/AKfycbzEkgdETgD5CjIrklWDK96I042EVEF9EWzYBGIs-wt0NMdAuMsz_L5cGhGLeOq3jBNy/exec" width="100%" height="100"></iframe>
 </body>
 </html>
