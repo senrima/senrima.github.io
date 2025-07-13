@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uji Proteksi Domain</title>
-    <style>
-        body { font-family: sans-serif; display: grid; place-content: center; height: 100vh; text-align: center; }
-        #status { margin-top: 20px; font-weight: bold; height: 20px; }
-        button { padding: 10px 20px; font-size: 16px; }
-    </style>
+  <title>Test Koneksi ke Google Apps Script</title>
 </head>
 <body>
-    <h1>Tes Komunikasi Ping-Pong</h1>
-    <button id="test-btn">Kirim Ping ke Server</button>
-    <div id="status"></div>
+  <h1>Uji Koneksi</h1>
+  <button onclick="cekKoneksi()">Tes Koneksi</button>
+  <p id="hasil"></p>
 
-    <script src="js/script.js"></script>
+  <script>
+    async function cekKoneksi() {
+      const url = "https://script.google.com/macros/s/AKfycbzEkgdETgD5CjIrklWDK96I042EVEF9EWzYBGIs-wt0NMdAuMsz_L5cGhGLeOq3jBNy/exec"; // Ganti dengan URL kamu
+
+      try {
+        const res = await fetch(url);
+        const text = await res.text();
+        document.getElementById("hasil").textContent = "RESPON: " + text;
+      } catch (error) {
+        document.getElementById("hasil").textContent = "ERROR: " + error;
+      }
+    }
+  </script>
 </body>
 </html>
